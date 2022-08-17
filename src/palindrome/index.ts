@@ -16,3 +16,9 @@ export function isPalindrome(phrase: string): boolean {
 
   return true;
 }
+
+// const alternative = (phrase: string): boolean => {
+//   return phrase
+//     .split('')
+//     .every((char, i) => char === phrase[phrase.length - i - 1]);
+// };
