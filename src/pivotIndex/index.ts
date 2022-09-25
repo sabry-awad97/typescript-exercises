@@ -1,3 +1,4 @@
+// PivotIndex ot MiddleIndex
 export function pivotIndex(numbers: number[]): number {
   const totalSum = numbers.reduce((a, b) => a + b, 0);
 
