@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { canThreePartsEqualSum } from '.';
 
-describe('pivotIndex', () => {
+describe('canThreePartsEqualSum', () => {
   it('should return true if the array can be partitioned into three non-empty parts with equal sums.', () => {
     // arrange
     const numbers = [0, 2, 1, -6, 6, -7, 9, 1, 2, 0, 1];
