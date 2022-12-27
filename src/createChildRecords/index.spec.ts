@@ -44,12 +44,10 @@ describe('createRecords', () => {
       { id: 1, name: 'Alice', ageInYears: 25, ageInMonths: 300, income: 0 },
       { id: 2, name: 'Bob', ageInYears: 30, ageInMonths: 360, income: 0 },
     ];
-    const result = transformRecords(
-      records,
-      attributeMapping,
+    const result = transformRecords(records, attributeMapping, {
       filterFn,
-      sortFn
-    );
+      sortFn,
+    });
     expect(result).toEqual(expectedResult);
   });
 });

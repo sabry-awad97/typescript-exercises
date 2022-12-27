@@ -6,20 +6,25 @@ export interface Record {
   [key: string]: any;
 }
 
+export interface TransformOptions<V> {
+  filterFn?: (record: V) => boolean;
+  sortFn?: (recordA: V, recordB: V) => any;
+  [key: string]: any;
+}
+
 export function transformRecords<
   T extends Record,
   U extends Mapping,
   V extends Record = T
 >(
   sourceRecords: T[],
-  attrMapping: U,
-  filterFn?: (record: V) => boolean,
-  sortFn?: (recordA: V, recordB: V) => any
+  attributeMapping: U,
+  options: TransformOptions<Record> = {}
 ): V[] {
   let newRecords: V[] = [];
   for (const sourceRecord of sourceRecords) {
     const newRecord: Partial<V> = {} as Partial<V>;
-    for (const [key, mapping] of Object.entries(attrMapping)) {
+    for (const [key, mapping] of Object.entries(attributeMapping)) {
       const [sourceKey, mappingFn, defaultValue] = mapping;
       let value: any;
       if (Array.isArray(sourceKey)) {
@@ -37,11 +42,11 @@ export function transformRecords<
     }
     newRecords.push(newRecord as V);
   }
-  if (filterFn) {
-    newRecords = newRecords.filter(filterFn);
+  if (options.filterFn) {
+    newRecords = newRecords.filter(options.filterFn);
   }
-  if (sortFn) {
-    newRecords.sort(sortFn);
+  if (options.sortFn) {
+    newRecords.sort(options.sortFn);
   }
   return newRecords;
 }
