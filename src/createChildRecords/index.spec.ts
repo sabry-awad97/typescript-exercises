@@ -1,5 +1,5 @@
 import { expect, describe, it } from 'vitest';
-import { AttributeMapping, createRecords, Record } from '.';
+import { Mapping, transformRecords, Record } from '.';
 
 describe('createRecords', () => {
   it('creates records based on the attribute mapping', () => {
@@ -8,7 +8,7 @@ describe('createRecords', () => {
       { id: 2, name: 'Bob', age: 30 },
       { id: 3, name: 'Charlie', age: 35 },
     ];
-    const attributeMapping: AttributeMapping = {
+    const attributeMapping: Mapping = {
       id: ['id', null, null],
       name: ['name', null, 'Unknown'],
       ageInYears: ['age', null, null],
@@ -20,7 +20,7 @@ describe('createRecords', () => {
       { id: 2, name: 'Bob', ageInYears: 30, ageInMonths: 360, income: 0 },
       { id: 3, name: 'Charlie', ageInYears: 35, ageInMonths: 420, income: 0 },
     ];
-    const result = createRecords(records, attributeMapping);
+    const result = transformRecords(records, attributeMapping);
     expect(result).toEqual(expectedResult);
   });
 
@@ -30,7 +30,7 @@ describe('createRecords', () => {
       { id: 2, name: 'Bob', age: 30 },
       { id: 3, name: 'Charlie', age: 35 },
     ];
-    const attributeMapping: AttributeMapping = {
+    const attributeMapping: Mapping = {
       id: ['id', null, null],
       name: ['name', null, 'Unknown'],
       ageInYears: ['age', null, null],
@@ -44,7 +44,12 @@ describe('createRecords', () => {
       { id: 1, name: 'Alice', ageInYears: 25, ageInMonths: 300, income: 0 },
       { id: 2, name: 'Bob', ageInYears: 30, ageInMonths: 360, income: 0 },
     ];
-    const result = createRecords(records, attributeMapping, filterFn, sortFn);
+    const result = transformRecords(
+      records,
+      attributeMapping,
+      filterFn,
+      sortFn
+    );
     expect(result).toEqual(expectedResult);
   });
 });

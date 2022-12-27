@@ -1,4 +1,4 @@
-export interface AttributeMapping {
+export interface Mapping {
   [key: string]: [string | string[], null | ((val: any) => any), any];
 }
 
@@ -6,16 +6,20 @@ export interface Record {
   [key: string]: any;
 }
 
-export function createRecords<T extends Record, U extends AttributeMapping>(
+export function transformRecords<
+  T extends Record,
+  U extends Mapping,
+  V extends Record = T
+>(
   sourceRecords: T[],
-  attributeMapping: U,
-  filterFn?: (record: T) => boolean,
-  sortFn?: (recordA: T, recordB: T) => any
-): T[] {
-  let newRecords: T[] = [];
+  attrMapping: U,
+  filterFn?: (record: V) => boolean,
+  sortFn?: (recordA: V, recordB: V) => any
+): V[] {
+  let newRecords: V[] = [];
   for (const sourceRecord of sourceRecords) {
-    const newRecord: T = {} as T;
-    for (const [key, mapping] of Object.entries(attributeMapping)) {
+    const newRecord: Partial<V> = {} as Partial<V>;
+    for (const [key, mapping] of Object.entries(attrMapping)) {
       const [sourceKey, mappingFn, defaultValue] = mapping;
       let value: any;
       if (Array.isArray(sourceKey)) {
@@ -29,9 +33,9 @@ export function createRecords<T extends Record, U extends AttributeMapping>(
       if (mappingFn) {
         value = mappingFn(value);
       }
-      newRecord[key as keyof T] = value;
+      newRecord[key as keyof V] = value;
     }
-    newRecords.push(newRecord);
+    newRecords.push(newRecord as V);
   }
   if (filterFn) {
     newRecords = newRecords.filter(filterFn);
