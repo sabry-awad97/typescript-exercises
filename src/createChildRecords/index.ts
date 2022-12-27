@@ -6,7 +6,7 @@ export interface Record {
   [key: string]: any;
 }
 
-export interface TransformOptions<V> {
+export interface TransformOptions<V extends Record> {
   filterFn?: (record: V) => boolean;
   sortFn?: (recordA: V, recordB: V) => any;
   [key: string]: any;
@@ -19,7 +19,7 @@ export function transformRecords<
 >(
   sourceRecords: T[],
   attributeMapping: U,
-  options: TransformOptions<Record> = {}
+  options: TransformOptions<V> = {}
 ): V[] {
   let newRecords: V[] = [];
   for (const sourceRecord of sourceRecords) {
