@@ -10,11 +10,11 @@
     "test": "vitest"
   },
   "devDependencies": {
-    "typescript": "^4.6.4",
-    "vite": "^3.0.7"
+    "typescript": "^4.9.4",
+    "vite": "^4.0.3"
   },
   "dependencies": {
-    "tsm": "^2.2.2",
-    "vitest": "^0.22.0"
+    "tsm": "^2.3.0",
+    "vitest": "^0.26.2"
   }
 }
