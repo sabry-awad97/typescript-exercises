@@ -2,26 +2,26 @@ export interface AttributeMapping {
   [key: string]: [string | string[], null | ((val: any) => any), any];
 }
 
-export interface ParentRecord {
+export interface Record {
   [key: string]: any;
 }
 
-export function createChildRecords<T extends ParentRecord, U extends AttributeMapping>(
-  parentRecords: T[],
+export function createRecords<T extends Record, U extends AttributeMapping>(
+  sourceRecords: T[],
   attributeMapping: U,
   filterFn?: (record: T) => boolean,
   sortFn?: (recordA: T, recordB: T) => any
 ): T[] {
-  let childRecords: T[] = [];
-  for (const parentRecord of parentRecords) {
-    const childRecord: T = {} as T;
+  let newRecords: T[] = [];
+  for (const sourceRecord of sourceRecords) {
+    const newRecord: T = {} as T;
     for (const [key, mapping] of Object.entries(attributeMapping)) {
       const [sourceKey, mappingFn, defaultValue] = mapping;
       let value: any;
       if (Array.isArray(sourceKey)) {
-        value = sourceKey.reduce((acc, k) => acc[k as keyof T], parentRecord);
+        value = sourceKey.reduce((acc, k) => acc[k as keyof T], sourceRecord);
       } else {
-        value = parentRecord[sourceKey as keyof T];
+        value = sourceRecord[sourceKey as keyof T];
       }
       if (value === undefined) {
         value = defaultValue;
@@ -29,15 +29,15 @@ export function createChildRecords<T extends ParentRecord, U extends AttributeMa
       if (mappingFn) {
         value = mappingFn(value);
       }
-      childRecord[key as keyof T] = value;
+      newRecord[key as keyof T] = value;
     }
-    childRecords.push(childRecord);
+    newRecords.push(newRecord);
   }
   if (filterFn) {
-    childRecords = childRecords.filter(filterFn);
+    newRecords = newRecords.filter(filterFn);
   }
   if (sortFn) {
-    childRecords.sort(sortFn);
+    newRecords.sort(sortFn);
   }
-  return childRecords;
+  return newRecords;
 }
